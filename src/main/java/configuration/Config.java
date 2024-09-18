@@ -1,0 +1,28 @@
+package configuration;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class Config {
+    private static final String CONFIG_FILE_PATH = "src/main/resources/configuration.properties";
+    private static final Properties PROPERTIES = new Properties();
+
+    public static final String BASE_URL;
+    public static final String USERNAME;
+    public static final String EMAIL;
+    public static final String PASSWORD;
+
+    static {
+        try {
+            PROPERTIES.load(new FileInputStream(CONFIG_FILE_PATH));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BASE_URL = PROPERTIES.getProperty("app.url");
+        USERNAME = PROPERTIES.getProperty("username");
+        EMAIL = PROPERTIES.getProperty("email");
+        PASSWORD = PROPERTIES.getProperty("password");
+    }
+}
