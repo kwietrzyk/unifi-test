@@ -1,4 +1,4 @@
-package pages;
+package pages.setup;
 
 public class AdvanceSetupPage {
 }

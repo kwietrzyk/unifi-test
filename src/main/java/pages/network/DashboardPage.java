@@ -1,0 +1,12 @@
+package pages.network;
+
+import com.codeborne.selenide.SelenideElement;
+
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
+
+public class DashboardPage {
+
+    public SelenideElement adminName = $x("//*[contains(text(),'opened UniFi Network via the web.')]");
+    public SelenideElement settings = $("[href*='settings']");
+}

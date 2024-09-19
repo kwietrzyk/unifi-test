@@ -1,6 +1,7 @@
-package pages;
+package pages.setup;
 
 import com.codeborne.selenide.SelenideElement;
+import pages.setup.AdvanceSetupPage;
 
 import static com.codeborne.selenide.Selenide.$;
 
