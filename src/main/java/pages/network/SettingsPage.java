@@ -7,4 +7,6 @@ import static com.codeborne.selenide.Selenide.$;
 public class SettingsPage {
 
     public SelenideElement system = $("span[data-testid='system']");
+    public SelenideElement country = $("[id='country.code']");
+
 }
