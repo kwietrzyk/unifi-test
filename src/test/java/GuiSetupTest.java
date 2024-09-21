@@ -1,5 +1,4 @@
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
 import configuration.Config;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -12,17 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
 import pages.network.DashboardPage;
 import pages.setup.SetupPage;
-import ru.yandex.qatools.allure.annotations.Step;
-
-import java.util.List;
-import java.util.Map;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.value;
 import static com.codeborne.selenide.Selenide.*;
 import static io.restassured.RestAssured.requestSpecification;
 
-public class SetupTest extends BaseTest {
+public class GuiSetupTest extends BaseTest {
 
     private final static SetupPage setupPage = page(SetupPage.class);
     private final String serverName = "KasiaNetwork";
@@ -47,8 +42,7 @@ public class SetupTest extends BaseTest {
     public void shouldSetupServerGui() {
 
         DashboardPage dashboardPage =
-                setupPage
-                .setServerName(serverName)
+                setupPage.setServerName(serverName)
                 .setCountry(country)
                 .clickLicenceButton()
                 .clickNextButton()
@@ -63,31 +57,6 @@ public class SetupTest extends BaseTest {
         dashboardPage.adminName.shouldHave(text(Config.USERNAME));
         dashboardPage.goToSettings()
                 .country.shouldHave(value(country));
-    }
-
-    @Test
-    @DisplayName("REST setup verification")
-    public void shouldSetupServerRest() {
-
-        requestSpecification = new RequestSpecBuilder()
-                .setBaseUri(Config.BASE_URL)
-                .setContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        RestAssured.responseSpecification = new ResponseSpecBuilder()
-                .expectContentType(ContentType.JSON)
-                .log(LogDetail.ALL)
-                .build();
-
-        RestAssured.given().spec(requestSpecification)
-                .body("")
-                .when()
-                .post("/api/cmd/sitemgr")
-                .then()
-                .statusCode(200);
-
-
     }
 
 }

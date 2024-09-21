@@ -1,5 +1,10 @@
 package configuration;
 
+import api.ApiClient;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;

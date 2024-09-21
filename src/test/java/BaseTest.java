@@ -48,5 +48,4 @@ public class BaseTest {
         writer.close();
         reader.close();
     }
-
 }
