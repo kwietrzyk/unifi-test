@@ -16,7 +16,6 @@ public class GuiSetupTest extends BaseTest {
 
     @BeforeEach
     public void openApplication() {
-        setSelenideConfiguration();
         open(Config.BASE_URL);
     }
 

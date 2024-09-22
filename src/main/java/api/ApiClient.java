@@ -9,7 +9,6 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
 import static io.restassured.config.SSLConfig.sslConfig;
 
 public class ApiClient {
@@ -32,35 +31,35 @@ public class ApiClient {
                 .contentType(ContentType.JSON);
     }
 
-    public void postLocalAdmin(LocalAdminDto body) {
+    public Response postLocalAdmin(LocalAdminDto body) {
         String endpoint = "/api/cmd/sitemgr";
         Gson gson = new Gson();
         String jsonBody = gson.toJson(body);
-        postRequest(endpoint, jsonBody);
+        return postRequest(endpoint, jsonBody);
     }
 
-    public void postApplicationName(String appName) {
+    public Response postApplicationName(String appName) {
         String endpoint = "/api/set/setting/super_identity";
         String body = "{\"name\": \"" + appName + "\"}";
-        postRequest(endpoint, body);
+        return postRequest(endpoint, body);
     }
 
-    public void postCountryCode(String countryCode) {
+    public Response postCountryCode(String countryCode) {
         String endpoint = "/api/set/setting/country";
         String body = "{\"code\": \"" + countryCode + "\"}";
-        postRequest(endpoint, body);
+        return postRequest(endpoint, body);
     }
 
-    public void postTimezone(String timezone) {
+    public Response postTimezone(String timezone) {
         String endpoint = "/api/set/setting/locale";
         String body = "{\"timezone\": \"" + timezone + "\"}";
-        postRequest(endpoint, body);
+        return postRequest(endpoint, body);
     }
 
-    public void postConfigState(String configState) {
+    public Response postConfigState(String configState) {
         String endpoint = "/api/cmd/system";
         String body = "{\"cmd\": \"" + configState + "\"}";
-        postRequest(endpoint, body);
+        return postRequest(endpoint, body);
     }
 
     public Response getAdmin() {
@@ -73,14 +72,16 @@ public class ApiClient {
         return getRequest(endpoint);
     }
 
-    private void postRequest(String endpoint, String body) {
-        given()
+    private Response postRequest(String endpoint, String body) {
+        return given()
                 .spec(requestSpecification)
                 .body(body)
                 .when()
                 .post(endpoint)
                 .then()
-                .spec(responseSpecification);
+                .spec(responseSpecification)
+                .extract()
+                .response();
     }
 
     private Response getRequest(String endpoint) {

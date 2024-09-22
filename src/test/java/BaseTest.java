@@ -2,11 +2,13 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import configuration.Config;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.LogManager;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.url;
@@ -17,8 +19,39 @@ public class BaseTest {
     private static final String EXPECTED_URL_SUFFIX = "/setup/configure/controller-name";
     private static final int TIMEOUT_SECONDS = 60;
 
+    @BeforeAll
+    public static void setupPreconfiguration() {
+        setupLogging();
+        setSelenideConfiguration();
+    }
+
+    public static void setupLogging() {
+        try {
+            InputStream stream = BaseTest.class.getClassLoader().getResourceAsStream("logging.properties");
+            if (stream != null) {
+                LogManager.getLogManager().readConfiguration(stream);
+            } else {
+                System.err.println("Cannot find file logging.properties");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setSelenideConfiguration() {
+        Configuration.browser = "chrome";
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("disable-infobars");
+        chromeOptions.addArguments("start-maximized");
+        chromeOptions.addArguments("no-sandbox");
+        chromeOptions.addArguments("disable-default-apps");
+        chromeOptions.addArguments("--disable-search-engine-choice-screen");
+        Configuration.browserCapabilities = chromeOptions;
+    }
+
     @BeforeEach
     public void prepareApplicationInFactoryDefaultState() throws Exception {
+        setupLogging();
         removeExistingDockerContainers();
         installApplication();
         waitForUrlToBeAvailable();
@@ -33,8 +66,7 @@ public class BaseTest {
         try {
             ProcessBuilder pb = new ProcessBuilder("wsl", "docker stop $(docker ps -q) && docker rm $(docker ps -a -q)");
             Process process = pb.start();
-            int exitCode = process.waitFor();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -62,17 +94,6 @@ public class BaseTest {
             throw new RuntimeException("Script install.sh failed. Exit code: " + exitCode);
         }
         System.out.println("Script install.sh passed");
-    }
-
-    protected void setSelenideConfiguration() {
-        Configuration.browser = "chrome";
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("disable-infobars");
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("no-sandbox");
-        chromeOptions.addArguments("disable-default-apps");
-        chromeOptions.addArguments("--disable-search-engine-choice-screen");
-        Configuration.browserCapabilities = chromeOptions;
     }
 
     private void waitForUrlToBeAvailable() {
