@@ -13,7 +13,3 @@ This project provides an automated installation of the UniFi Network application
 - Downloaded `docker-compose.yaml` file
 - Update configuration.properties file
 
-## Test Sequence
-
-1. **GUI Test** (includes configuration)
-2. **REST Test**

@@ -1,5 +1,6 @@
 package api;
 
+import com.google.gson.Gson;
 import configuration.Config;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -8,12 +9,13 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static io.restassured.config.SSLConfig.sslConfig;
 
 public class ApiClient {
 
-    private final RequestSpecification requestSpecification;
-    private final ResponseSpecification responseSpecification;
+    private RequestSpecification requestSpecification;
+    private ResponseSpecification responseSpecification;
     private String sessionCookie;
     private String csrfToken;
 
@@ -26,17 +28,15 @@ public class ApiClient {
                 .statusCode(200)
                 .contentType(ContentType.JSON);
 
-        authenticate();
-
         requestSpecification = given()
-                .contentType(ContentType.JSON)
-                .cookie("unifises", sessionCookie)
-                .header("X-CSRF-Token", csrfToken);
+                .contentType(ContentType.JSON);
     }
 
-    public void postLocalAdmin(String body) {
+    public void postLocalAdmin(LocalAdminDto body) {
         String endpoint = "/api/cmd/sitemgr";
-        postRequest(endpoint, body);
+        Gson gson = new Gson();
+        String jsonBody = gson.toJson(body);
+        postRequest(endpoint, jsonBody);
     }
 
     public void postApplicationName(String appName) {
@@ -84,8 +84,11 @@ public class ApiClient {
     }
 
     private Response getRequest(String endpoint) {
+        authenticate();
         return given()
                 .spec(requestSpecification)
+                .cookie("unifises", sessionCookie)
+                .header("X-CSRF-Token", csrfToken)
                 .when()
                 .get(endpoint)
                 .then()

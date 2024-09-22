@@ -8,14 +8,15 @@ import pages.setup.SetupPage;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
-public class GuiSetupTest extends GuiBaseTest {
+public class GuiSetupTest extends BaseTest {
 
     private final static SetupPage setupPage = page(SetupPage.class);
-    private final String serverName = "UniFi Network";
-    private final String country = "United States";
+    private final String serverName = "Kasia Network";
+    private final String country = "Poland";
 
     @BeforeEach
     public void openApplication() {
+        setSelenideConfiguration();
         open(Config.BASE_URL);
     }
 
