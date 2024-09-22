@@ -15,24 +15,23 @@ public class ApiClient {
     private final RequestSpecification requestSpecification;
     private final ResponseSpecification responseSpecification;
     private String sessionCookie;
+    private String csrfToken;
 
     public ApiClient() {
         RestAssured.baseURI = Config.BASE_URL;
         RestAssured.config = RestAssured.config()
                 .sslConfig(sslConfig().relaxedHTTPSValidation());
 
-        // Response Specification
         responseSpecification = RestAssured.expect()
                 .statusCode(200)
                 .contentType(ContentType.JSON);
 
         authenticate();
 
-        // Request Specification, dodanie sesyjnego ciasteczka po autoryzacji
         requestSpecification = given()
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .cookie("SESSIONID", sessionCookie);  // Dodanie sesyjnego ciasteczka do specyfikacji
+                .cookie("unifises", sessionCookie)
+                .header("X-CSRF-Token", csrfToken);
     }
 
     public void postLocalAdmin(String body) {
@@ -96,7 +95,7 @@ public class ApiClient {
     }
 
     private void authenticate() {
-        String endpoint = "/api/auth/login";
+        String endpoint = Config.BASE_URL + "api/login";
 
         String loginBody = """
             {
@@ -107,18 +106,29 @@ public class ApiClient {
 
         Response response = given()
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
                 .body(loginBody)
                 .post(endpoint);
-
-        System.out.println("Login Body: " + loginBody);
-        System.out.println("Endpoint: " + endpoint);
-        System.out.println("Response Body: " + response.body().asString());
+        response.then().log().all();
 
         if (response.statusCode() == 200) {
-            sessionCookie = response.getCookie("SESSIONID");
+            sessionCookie = response.getCookie("unifises");
+            csrfToken = response.getCookie("csrf_token");
         } else {
             throw new RuntimeException("Authentication failed: " + response.statusLine());
+        }
+    }
+
+    public void logOut() {
+        Response response = RestAssured.given()
+                .contentType(ContentType.JSON)
+                .cookie("unifises", sessionCookie)
+                .header("X-CSRF-Token", csrfToken)
+                .post(Config.BASE_URL + "api/logout");
+
+        if (response.getStatusCode() == 200) {
+            System.out.println("User is logged out");
+        } else {
+            System.err.println("Logout failed with status code: " + response.getStatusCode());
         }
     }
 }
