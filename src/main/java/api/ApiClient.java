@@ -100,19 +100,10 @@ public class ApiClient {
 
     private void authenticate() {
         String endpoint = Config.BASE_URL + "api/login";
-
-        String loginBody = """
-            {
-                "username": "%s",
-                "password": "%s"
-            }
-            """.formatted(Config.USERNAME, Config.PASSWORD);
-
         Response response = given()
                 .contentType(ContentType.JSON)
-                .body(loginBody)
+                .body(new AuthenticationDto(Config.USERNAME, Config.PASSWORD))
                 .post(endpoint);
-        response.then().log().all();
 
         if (response.statusCode() == 200) {
             sessionCookie = response.getCookie("unifises");

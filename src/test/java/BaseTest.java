@@ -20,24 +20,6 @@ public class BaseTest {
     private static final int TIMEOUT_SECONDS = 60;
 
     @BeforeAll
-    public static void setupPreconfiguration() {
-        setupLogging();
-        setSelenideConfiguration();
-    }
-
-    public static void setupLogging() {
-        try {
-            InputStream stream = BaseTest.class.getClassLoader().getResourceAsStream("logging.properties");
-            if (stream != null) {
-                LogManager.getLogManager().readConfiguration(stream);
-            } else {
-                System.err.println("Cannot find file logging.properties");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void setSelenideConfiguration() {
         Configuration.browser = "chrome";
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -51,7 +33,6 @@ public class BaseTest {
 
     @BeforeEach
     public void prepareApplicationInFactoryDefaultState() throws Exception {
-        setupLogging();
         removeExistingDockerContainers();
         installApplication();
         waitForUrlToBeAvailable();

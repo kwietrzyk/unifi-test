@@ -15,9 +15,10 @@
         <aspectj.version>1.9.21</aspectj.version>
         <org.junit.jupiter>5.4.2</org.junit.jupiter>
         <org.slf4j>1.8.0-beta4</org.slf4j>
+        <io.qameta.allure>2.13.0</io.qameta.allure>
         <selenium.version>4.0.0-alpha-1</selenium.version>
         <lombok.version>1.18.20</lombok.version>
-        <io.qameta.allure>2.13.0</io.qameta.allure>
+        <log4j.version>2.22.0</log4j.version>
     </properties>
 
     <dependencies>
@@ -35,17 +36,6 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>${io.qameta.allure}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-selenide</artifactId>
-            <version>${io.qameta.allure}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-junit-adaptor</artifactId>
-            <version>1.5.4</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -73,11 +63,6 @@
             <version>1.0.10</version>
         </dependency>
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>4.4.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
@@ -86,11 +71,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.awaitility</groupId>
@@ -109,14 +89,29 @@
             <version>2.9.1</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.14</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
 
