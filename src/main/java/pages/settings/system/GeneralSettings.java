@@ -1,10 +1,10 @@
-package pages.settings;
+package pages.settings.system;
 
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class generalSettings {
+public class GeneralSettings {
 
     public SelenideElement country = $("[id='country.code']");
 }

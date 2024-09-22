@@ -107,8 +107,13 @@ public class ApiClient {
 
         Response response = given()
                 .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
                 .body(loginBody)
                 .post(endpoint);
+
+        System.out.println("Login Body: " + loginBody);
+        System.out.println("Endpoint: " + endpoint);
+        System.out.println("Response Body: " + response.body().asString());
 
         if (response.statusCode() == 200) {
             sessionCookie = response.getCookie("SESSIONID");
