@@ -1,5 +1,7 @@
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import configuration.Config;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -20,6 +22,11 @@ public class BaseTest {
         removeExistingDockerContainers();
         installApplication();
         waitForUrlToBeAvailable();
+    }
+
+    @AfterEach
+    public void closeBrowser() {
+        Selenide.closeWebDriver();
     }
 
     public static void removeExistingDockerContainers() {
