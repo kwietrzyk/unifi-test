@@ -39,7 +39,10 @@ public class GuiBaseTest {
     }
 
     public void installApplication() throws Exception {
-        ProcessBuilder processBuilder = new ProcessBuilder("wsl", "-d", "Ubuntu", "--", "/bin/bash", "-c", "cd ~/Kasia/task_v2 && ./install.sh");
+        ProcessBuilder processBuilder = new ProcessBuilder(
+                "wsl", "-d", "Ubuntu", "--", "/bin/bash", "-c",
+                String.format("cd %s && ./install.sh", Config.SCRIPT_PATH)
+        );
         Process process = processBuilder.start();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {

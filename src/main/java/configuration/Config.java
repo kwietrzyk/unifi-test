@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Config {
+
     private static final String CONFIG_FILE_PATH = "src/main/resources/configuration.properties";
     private static final Properties PROPERTIES = new Properties();
 
+    public static final String SCRIPT_PATH;
     public static final String BASE_URL;
     public static final String USERNAME;
     public static final String EMAIL;
@@ -25,6 +27,7 @@ public class Config {
             e.printStackTrace();
         }
 
+        SCRIPT_PATH = PROPERTIES.getProperty("script.path");
         BASE_URL = PROPERTIES.getProperty("app.url");
         USERNAME = PROPERTIES.getProperty("username");
         EMAIL = PROPERTIES.getProperty("email");
