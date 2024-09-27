@@ -8,7 +8,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.LogManager;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.url;
@@ -33,7 +32,6 @@ public class BaseTest {
 
     @BeforeEach
     public void prepareApplicationInFactoryDefaultState() throws Exception {
-        removeExistingDockerContainers();
         installApplication();
         waitForUrlToBeAvailable();
     }
@@ -41,15 +39,6 @@ public class BaseTest {
     @AfterEach
     public void closeBrowser() {
         Selenide.closeWebDriver();
-    }
-
-    public static void removeExistingDockerContainers() {
-        try {
-            ProcessBuilder pb = new ProcessBuilder("wsl", "docker stop $(docker ps -q) && docker rm $(docker ps -a -q)");
-            Process process = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void installApplication() throws Exception {
