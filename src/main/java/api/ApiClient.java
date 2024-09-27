@@ -17,6 +17,7 @@ public class ApiClient {
     private ResponseSpecification responseSpecification;
     private String sessionCookie;
     private String csrfToken;
+    private boolean isLoggedIn = false;
 
     public ApiClient() {
         RestAssured.baseURI = Config.BASE_URL;
@@ -74,46 +75,46 @@ public class ApiClient {
 
     private Response postRequest(String endpoint, String body) {
         return given()
-                .spec(requestSpecification)
                 .body(body)
                 .when()
                 .post(endpoint)
                 .then()
-                .spec(responseSpecification)
                 .extract()
                 .response();
     }
 
     private Response getRequest(String endpoint) {
-        authenticate();
         return given()
-                .spec(requestSpecification)
                 .cookie("unifises", sessionCookie)
                 .header("X-CSRF-Token", csrfToken)
                 .when()
                 .get(endpoint)
                 .then()
-                .spec(responseSpecification)
                 .extract()
                 .response();
     }
 
-    private void authenticate() {
+    public void authenticate(String username, String password) {
         String endpoint = Config.BASE_URL + "api/login";
         Response response = given()
                 .contentType(ContentType.JSON)
-                .body(new AuthenticationDto(Config.USERNAME, Config.PASSWORD))
+                .body(new AuthenticationDto(username, password))
                 .post(endpoint);
 
         if (response.statusCode() == 200) {
             sessionCookie = response.getCookie("unifises");
             csrfToken = response.getCookie("csrf_token");
+            isLoggedIn = true;
         } else {
             throw new RuntimeException("Authentication failed: " + response.statusLine());
         }
     }
 
     public void logOut() {
+        if (!isLoggedIn) {
+            System.out.println("User is not logged in");
+            return;
+        }
         Response response = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .cookie("unifises", sessionCookie)
@@ -122,6 +123,7 @@ public class ApiClient {
 
         if (response.getStatusCode() == 200) {
             System.out.println("User is logged out");
+            isLoggedIn = false;
         } else {
             System.err.println("Logout failed with status code: " + response.getStatusCode());
         }

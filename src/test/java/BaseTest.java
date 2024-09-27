@@ -23,10 +23,10 @@ public class BaseTest {
     public static void setSelenideConfiguration() {
         Configuration.browser = "chrome";
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("disable-infobars");
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("no-sandbox");
-        chromeOptions.addArguments("disable-default-apps");
+        chromeOptions.addArguments("--disable-infobars");
+        chromeOptions.addArguments("--start-maximized");
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--disable-default-apps");
         chromeOptions.addArguments("--disable-search-engine-choice-screen");
         Configuration.browserCapabilities = chromeOptions;
     }

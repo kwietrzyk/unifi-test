@@ -35,7 +35,7 @@ public class GuiSetupTest extends BaseTest {
                 .setEmail(Config.EMAIL)
                 .clickFinishButton();
 
-        dashboardPage.adminName.shouldHave(text(Config.USERNAME));
+        dashboardPage.adminName.shouldBe(visible).shouldHave(text(Config.USERNAME));
         dashboardPage.goToSettings()
                 .goToSystem()
                 .goToGeneral()

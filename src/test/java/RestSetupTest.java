@@ -35,6 +35,7 @@ public class RestSetupTest extends BaseTest {
         apiClient.postTimezone(timezone);
         apiClient.postConfigState(configState);
 
+        apiClient.authenticate(Config.USERNAME, Config.PASSWORD);
         apiClient.getAdmin().then().body("data[0].name", equalTo(Config.USERNAME));
         apiClient.getCountry().then().body("data[0].code", equalTo(countryCode));
     }

@@ -11,5 +11,6 @@ This project provides an automated installation of the UniFi Network application
 
 - Downloaded `install.sh` script
 - Downloaded `docker-compose.yaml` file
+- Install and open Docker
 - Update configuration.properties file
 
